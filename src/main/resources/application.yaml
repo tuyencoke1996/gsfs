@@ -1,0 +1,17 @@
+server:
+    port: 8080
+    servlet:
+      context-path: /api
+
+spring:
+    datasource:
+        url: jdbc:mysql://localhost:3306/gsfs
+        username: root
+        password: root
+    mybatis:
+        mapper-locations: classpath:mapper/*.xml
+        type-aliases-package: com.example.gsfs.domain
+
+jwt:
+    secret_key: Q56YwLkzT6zqpksufS4r8OoNiPxtn7WJrRPTG1eKOOlZnjgr9LKP9vXSfkui9R3l
+    expiration: 3600000
