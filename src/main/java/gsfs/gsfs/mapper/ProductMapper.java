@@ -8,21 +8,6 @@ import gsfs.gsfs.model.Product;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
-    @Insert("INSERT INTO products(name, price, description, amount) " +
-            "VALUES(#{name}, #{price}, #{description}, #{amount})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insert(Product product);
+public class ProductMapper {
 
-    @Select("SELECT * FROM products WHERE id = #{id}")
-    Product findById(Long id);
-
-    @Update("UPDATE products SET name=#{name}, price=#{price}, description=#{description}, amount=#{amount} WHERE id=#{id}")
-    void update(Product product);
-
-    @Delete("DELETE FROM products WHERE id=#{id}")
-    void delete(Long id);
-
-    @Select("SELECT * FROM products")
-    List<Product> findAll();
 }

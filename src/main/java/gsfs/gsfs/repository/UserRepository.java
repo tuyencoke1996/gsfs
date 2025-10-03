@@ -2,38 +2,38 @@ package gsfs.gsfs.repository;
 
 import gsfs.gsfs.mapper.UserMapper;
 import gsfs.gsfs.model.User;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class UserRepository {
-    private final UserMapper userMapper;
-    public UserRepository(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+@Mapper
+public interface UserRepository {
+    // Insert user
+    @Insert("INSERT INTO users(username, password, first_name, last_name, dob) " +
+            "VALUES(#{username}, #{password}, #{firstName}, #{lastName}, #{dob})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(User user);
 
-    public void save(User user) {
-        userMapper.insert(user);
-    }
+    // Select all users
+    @Select("SELECT id, username, password, first_name AS firstName, last_name AS lastName, dob, created_at AS createdAt, updated_at AS updatedAt FROM users")
+    List<User> findAll();
 
-    public List<User> findAll() {
-        return userMapper.findAll();
-    }
+    // Select user by ID
+    @Select("SELECT id, username, password, first_name AS firstName, last_name AS lastName, dob, created_at AS createdAt, updated_at AS updatedAt " +
+            "FROM users WHERE id = #{id}")
+    User findById(Long id);
 
-    public User findById(Long id) {
-        return userMapper.findById(id);
-    }
+    // Update user
+    @Update("UPDATE users SET username=#{username}, password=#{password}, first_name=#{firstName}, last_name=#{lastName}, dob=#{dob} WHERE id=#{id}")
+    void update(User user);
 
-    public void update(User user) {
-        userMapper.update(user);
-    }
+    // Delete user
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    void delete(Long id);
 
-    public void delete(Long id) {
-        userMapper.delete(id);
-    }
-
-    public boolean findByAdmin() {
-        return userMapper.isAdminExist();
-    }
+    // Check admin is exist
+    @Select("SELECT COUNT(*) > 0 FROM users WHERE username = 'admin'")
+    boolean isAdminExist();
 }

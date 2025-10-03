@@ -23,6 +23,6 @@ public class ApplicationInitConfig {
                 user.setPassword(passwordEncoder.encode("admin"));
                 userRepository.save(user);
             }
-        };}
+        };
     }
 }

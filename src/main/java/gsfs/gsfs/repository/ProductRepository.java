@@ -2,34 +2,28 @@ package gsfs.gsfs.repository;
 
 import gsfs.gsfs.mapper.ProductMapper;
 import gsfs.gsfs.model.Product;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public class ProductRepository {
-    private final ProductMapper productMapper;
-    public ProductRepository(ProductMapper productMapper) {
-        this.productMapper = productMapper;
-    }
+@Mapper
+public interface ProductRepository {
+    @Insert("INSERT INTO products(name, price, description, amount) " +
+            "VALUES(#{name}, #{price}, #{description}, #{amount})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(Product product);
 
-    public void save(Product product) {
-        productMapper.insert(product);
-    }
+    @Select("SELECT * FROM products WHERE id = #{id}")
+    Product findById(Long id);
 
-    public Product findById(Long id) {
-        return productMapper.findById(id);
-    }
+    @Update("UPDATE products SET name=#{name}, price=#{price}, description=#{description}, amount=#{amount} WHERE id=#{id}")
+    void update(Product product);
 
-    public List<Product> findAll() {
-        return productMapper.findAll();
-    }
+    @Delete("DELETE FROM products WHERE id=#{id}")
+    void delete(Long id);
 
-    public void update(Product product) {
-        productMapper.update(product);
-    }
-
-    public void delete(Long id) {
-        productMapper.delete(id);
-    }
+    @Select("SELECT * FROM products")
+    List<Product> findAll();
 }
